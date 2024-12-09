@@ -1,0 +1,86 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Student {
+  id: Float!
+  matricule: String!
+  classements: [Classement!]
+}
+
+type Classement {
+  id: Float!
+  studentId: Float!
+  rang: Float!
+  typepref: Float!
+  hopital: String!
+  service: String!
+}
+
+type Hopital {
+  id: Float!
+  nom: String!
+}
+
+type Service {
+  id: Float!
+  nom: String!
+}
+
+type Place {
+  id: Float!
+  hopital: String!
+  service: String!
+  places: String!
+}
+
+type Attribution {
+  matricule: String!
+  hopitalService: String!
+}
+
+type Query {
+  getStudents: [Student!]!
+  getStudentWithClassement(id: Float!): Student!
+  getHopitals: [Hopital!]!
+  getHopital(id: Float!): Hopital!
+  getPlaces: [Place!]!
+}
+
+type Mutation {
+  createStudent(createStudent: CreateStudentInput!): Student!
+  createClassement(createClassement: CreateClassementInput!): Classement!
+  updateClassement(id: Float!, updateClassement: CreateClassementInput!): Classement!
+  createHopital(input: CreateHopitalInput!): Hopital!
+  createService(input: CreateServiceInput!): Service!
+  createPlace(input: CreatePlaceInput!): Place!
+  updateHopital(id: Float!, input: CreateHopitalInput!): Hopital!
+  attribuerStages: [Attribution!]!
+}
+
+input CreateStudentInput {
+  matricule: String!
+  classements: [CreateClassementInput!]
+}
+
+input CreateClassementInput {
+  studentId: Float!
+  rang: Float!
+  typepref: Float!
+  hopital: String!
+  service: String!
+}
+
+input CreateHopitalInput {
+  nom: String!
+}
+
+input CreateServiceInput {
+  nom: String!
+}
+
+input CreatePlaceInput {
+  hopital: String!
+  service: String!
+  places: String!
+}
