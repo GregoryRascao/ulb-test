@@ -6,5 +6,5 @@ export class Attribution {
   matricule: string;
 
   @Field(() => String)
-  hopitalService: string;
+  hopitalAndService: string;
 }

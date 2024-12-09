@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 @Entity({ name: 'students' })
 @ObjectType()
 export class Student {

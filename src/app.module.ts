@@ -6,7 +6,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { StudentModule } from 'src/etudiant/etudiant.module';
 import { Classement, Student } from './models/etudiant';
 import { Hopital, Place, Service } from './models/stage';
-import { HopitalModule } from './hopital/hopital.module';
 
 @Module({
   imports: [
@@ -33,7 +32,6 @@ import { HopitalModule } from './hopital/hopital.module';
       inject: [ConfigService],
     }),
     StudentModule,
-    HopitalModule,
   ],
   controllers: [],
   providers: [StudentModule],

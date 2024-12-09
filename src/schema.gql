@@ -36,11 +36,12 @@ type Place {
 
 type Attribution {
   matricule: String!
-  hopitalService: String!
+  hopitalAndService: String!
 }
 
 type Query {
   getStudents: [Student!]!
+  getStudentById(id: Float!): Student!
   getStudentWithClassement(id: Float!): Student!
   getHopitals: [Hopital!]!
   getHopital(id: Float!): Hopital!
@@ -49,6 +50,8 @@ type Query {
 
 type Mutation {
   createStudent(createStudent: CreateStudentInput!): Student!
+  updateStudent(id: Float!, updateStudent: CreateStudentInput!): Student!
+  deleteStudent(id: Float!): Student!
   createClassement(createClassement: CreateClassementInput!): Classement!
   updateClassement(id: Float!, updateClassement: CreateClassementInput!): Classement!
   createHopital(input: CreateHopitalInput!): Hopital!

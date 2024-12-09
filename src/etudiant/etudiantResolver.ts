@@ -1,5 +1,4 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-// import { mockStudents } from 'src/_mock_/mockStudents';
 import {
   CreateClassementInput,
   CreateStudentInput,
@@ -18,31 +17,54 @@ import { Attribution } from 'src/models/attribution';
 export class StudentResolver {
   constructor(private readonly studentService: StudentService) {}
 
-  // @Query((returns) => Student)
-  // getStudentByMatricule(@Args('matricule') matricule: string): Student {
-  //   // return mockStudents.find((student) => student.matricule === matricule);
-  //   return this.studentService.getStudentByMatricule(matricule);
-  // }
+  /****************************************************/
+  /*********************STUDENT************************/
+  /****************************************************/
 
   @Query(() => [Student])
-  getStudents() {
-    return this.studentService.getStudent();
+  getStudents(): Promise<Student[]> {
+    return this.studentService.getStudents();
   }
 
   @Query(() => Student)
-  getStudentWithClassement(@Args('id') id: number) {
+  getStudentById(@Args('id') id: number): Promise<Student> {
+    return this.studentService.getStudentById(id);
+  }
+
+  @Query(() => Student)
+  getStudentWithClassement(@Args('id') id: number): Promise<Student> {
     return this.studentService.getStudentWithClassement(id);
   }
 
   @Mutation(() => Student)
-  createStudent(@Args('createStudent') createStudent: CreateStudentInput) {
+  createStudent(
+    @Args('createStudent') createStudent: CreateStudentInput,
+  ): Promise<Student> {
     return this.studentService.createStudent(createStudent);
   }
 
+  @Mutation(() => Student)
+  updateStudent(
+    @Args('id') id: number,
+    @Args('updateStudent') updateStudent: CreateStudentInput,
+  ): Promise<Student> {
+    const student = new Student();
+    Object.assign(student, updateStudent as Partial<Student>);
+    return this.studentService.updateStudent(id, student);
+  }
+
+  @Mutation(() => Student)
+  deleteStudent(@Args('id') id: number) {
+    return this.studentService.deleteStudent(id);
+  }
+
+  /****************************************************/
+  /******************STUDENT-CLASS*********************/
+  /****************************************************/
   @Mutation(() => Classement)
   createClassement(
     @Args('createClassement') createClassement: CreateClassementInput,
-  ) {
+  ): Promise<Classement> {
     return this.studentService.createClassement(createClassement);
   }
 
@@ -50,13 +72,16 @@ export class StudentResolver {
   updateClassement(
     @Args('id') id: number,
     @Args('updateClassement') updateClassement: CreateClassementInput,
-  ) {
+  ): Promise<Classement> {
     const classement = new Classement();
     Object.assign(classement, updateClassement as Partial<Classement>);
     return this.studentService.updateClassement(id, classement);
   }
 
-  // HOPITAL
+  /****************************************************/
+  /**************HOPITAL-SERVICE-PLACE*****************/
+  /****************************************************/
+
   @Mutation(() => Hopital)
   async createHopital(@Args('input') input: CreateHopitalInput) {
     return this.studentService.createHopital(input);
@@ -97,7 +122,9 @@ export class StudentResolver {
     return this.studentService.getPlaces();
   }
 
-  // ATTRIBUTION STAGE
+  /****************************************************/
+  /**************STAGE ATTIRIBUTION*******************/
+  /****************************************************/
   @Mutation(() => [Attribution])
   async attribuerStages(): Promise<any> {
     const etudiants = await this.getStudents();

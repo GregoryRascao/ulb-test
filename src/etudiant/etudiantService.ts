@@ -24,17 +24,20 @@ export class StudentService {
     @InjectRepository(Place) private placeRepository: Repository<Place>,
   ) {}
 
-  //STUDENT
-  getStudent() {
+  /****************************************************/
+  /*********************STUDENT************************/
+  /****************************************************/
+
+  getStudents(): Promise<Student[]> {
     return this.studentRepository.find();
   }
 
-  createStudent(student: CreateStudentInput) {
+  createStudent(student: CreateStudentInput): Promise<Student> {
     const newStudent = this.studentRepository.create(student);
     return this.studentRepository.save(newStudent);
   }
 
-  getStudentById(id: number) {
+  getStudentById(id: number): Promise<Student> {
     return this.studentRepository.findOne({
       where: {
         id: id,
@@ -42,63 +45,75 @@ export class StudentService {
     });
   }
 
-  async getStudentWithClassement(id: number) {
+  async getStudentWithClassement(id: number): Promise<Student> {
     const student = await this.studentRepository.findOne({
       where: { id },
       relations: ['classements'],
     });
-
-    console.log('student', student);
-
     return student;
   }
 
-  updateStudent(id: number, student: Student) {
-    return this.studentRepository.update(id, student);
+  async updateStudent(id: number, student: Student): Promise<Student> {
+    await this.studentRepository.update(id, student);
+    return this.studentRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
   }
 
   deleteStudent(id: number) {
     return this.studentRepository.delete(id);
   }
 
-  // STUDENT_CLASS
-  createClassement(classement: CreateClassementInput) {
+  /****************************************************/
+  /******************STUDENT-CLASS*********************/
+  /****************************************************/
+
+  createClassement(classement: CreateClassementInput): Promise<Classement> {
     const newClassement = this.classementRepository.create(classement);
     return this.classementRepository.save(newClassement);
   }
 
-  getStudentClassement() {
-    return this.classementRepository.find();
+  async updateClassement(
+    id: number,
+    classement: Classement,
+  ): Promise<Classement> {
+    await this.classementRepository.update(id, classement);
+    return this.classementRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
   }
 
-  updateClassement(id: number, classement: Classement) {
-    return this.classementRepository.update(id, classement);
-  }
+  /****************************************************/
+  /**************HOPITAL-SERVICE-PLACE*****************/
+  /****************************************************/
 
-  // HOPITAL
-  async createHopital(hopital: CreateHopitalInput) {
+  async createHopital(hopital: CreateHopitalInput): Promise<Hopital> {
     const newHopital = this.hopitalRepository.create(hopital);
     return this.hopitalRepository.save(newHopital);
   }
-  async createService(service: CreateServiceInput) {
+  async createService(service: CreateServiceInput): Promise<Service> {
     const newService = this.serviceRepository.create(service);
     return this.serviceRepository.save(newService);
   }
 
-  async createPlace(place: CreatePlaceInput) {
+  async createPlace(place: CreatePlaceInput): Promise<Place> {
     const newPlace = this.placeRepository.create(place);
     return this.placeRepository.save(newPlace);
   }
 
-  async getHopitals() {
+  async getHopitals(): Promise<Hopital[]> {
     return this.hopitalRepository.find();
   }
 
-  async getPlaces() {
+  async getPlaces(): Promise<Place[]> {
     return this.placeRepository.find();
   }
 
-  async getHopital(id: number) {
+  async getHopital(id: number): Promise<Hopital> {
     return this.hopitalRepository.findOne({
       where: {
         id: id,
